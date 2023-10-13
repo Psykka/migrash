@@ -1,0 +1,8 @@
+# Ignore all files in this directory
+/.vscode
+
+# Ignore all test migrations
+/migrations
+
+# Ignore the test database
+db.sqlite3
