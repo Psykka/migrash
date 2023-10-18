@@ -26,7 +26,7 @@ The following commands are available:
 # Download the shell script
 curl -L https://raw.githubusercontent.com/Psykka/migrash/main/migrash.sh -o migrash
 
-# Make if executable
+# Make it executable
 chmod 700 migrash
 
 # Copy to local bin
