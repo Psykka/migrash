@@ -169,7 +169,7 @@ reset() {
     echo "Migrations rolled back successfully"
 }
 
-# Rollback all migrations
+# Show migrations status
 status() {
     create_migration_table
 
