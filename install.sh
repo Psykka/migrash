@@ -2,8 +2,8 @@
 
 # Migrash install script
 # install example commands
-#   curl -sSL https://raw.githubusercontent.com/psykka/migrash/master/install.sh | sh
-#   wget -qO- https://raw.githubusercontent.com/psykka/migrash/master/install.sh | sh
+#   curl -sSL https://raw.githubusercontent.com/psykka/migrash/main/install.sh | sh
+#   wget -qO- https://raw.githubusercontent.com/psykka/migrash/main/install.sh | sh
 
 # check if has wget or curl installed
 if [ -x "$(command -v wget)" ]; then
@@ -24,9 +24,9 @@ fi
 
 # Download migrash.sh to /usr/local/bin
 if [ "$DOWNLOADER" = "wget" ]; then
-    wget -O /usr/local/bin/migrash -q https://raw.githubusercontent.com/psykka/migrash/master/migrash.sh
+    wget -O /usr/local/bin/migrash -q https://raw.githubusercontent.com/psykka/migrash/main/migrash.sh
 elif [ "$DOWNLOADER" = "curl" ]; then
-    curl -o /usr/local/bin/migrash -sSL https://raw.githubusercontent.com/psykka/migrash/master/migrash.sh
+    curl -o /usr/local/bin/migrash -sSL https://raw.githubusercontent.com/psykka/migrash/main/migrash.sh
 fi
 
 # Make migrash executable

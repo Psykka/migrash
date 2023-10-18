@@ -26,10 +26,10 @@ The following commands are available:
 Install with curl or wget, then run one of the fallowing commands:
 ```sh
 # Install with curl
-curl -sSL https://raw.githubusercontent.com/0x111/migrash/master/install.sh | sh
+curl -sSL https://raw.githubusercontent.com/psykka/migrash/main/install.sh | sh
 
 # install with wget
-wget -qO- https://raw.githubusercontent.com/0x111/migrash/master/install.sh | sh
+wget -qO- https://raw.githubusercontent.com/psykka/migrash/main/install.sh | sh
 ```
 
 ### Windows
