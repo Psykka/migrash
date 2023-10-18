@@ -35,7 +35,7 @@ create_migration_table() {
         mysql)
             $SGDB $DATABASE_URL "CREATE TABLE IF NOT EXISTS $MIGRATION_TABLE (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL);"
             ;;
-        postgres)
+        psql)
             $SGDB $DATABASE_URL "CREATE TABLE IF NOT EXISTS $MIGRATION_TABLE (id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL, created_at TIMESTAMP NOT NULL);"
             ;;
         *)

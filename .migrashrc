@@ -3,7 +3,7 @@
 # example config file
 
 MIGRATIONS_DIR="migrations"
-SGDB="sqlite3" # sqlite3, mysql, postgres, etc
+SGDB="sqlite3" # sqlite3, mysql, psql, etc
 # DATABASE_URL=$DATABASE_URL # from env
 DATABASE_URL="db.sqlite3" # hardcoded
 MIGRATION_TABLE="_migrash_migrations"
