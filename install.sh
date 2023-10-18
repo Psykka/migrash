@@ -17,9 +17,9 @@ fi
 
 run_root_installer() {
     if [ "$DOWNLOADER" = "wget" ]; then
-        wget -qO- https://raw.githubusercontent.com/psykka/migrash/main/migrash.sh | sh
+        wget -qO- https://raw.githubusercontent.com/psykka/migrash/main/install.sh | sh
     elif [ "$DOWNLOADER" = "curl" ]; then
-        curl -sSL https://raw.githubusercontent.com/psykka/migrash/main/migrash.sh | sh
+        curl -sSL https://raw.githubusercontent.com/psykka/migrash/main/install.sh | sh
     fi
 }
 
