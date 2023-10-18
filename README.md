@@ -22,15 +22,14 @@ The following commands are available:
 ## Installation
 
 ### Unix systems
+
+Install with curl or wget, then run one of the fallowing commands:
 ```sh
-# Download the shell script
-curl -L https://raw.githubusercontent.com/Psykka/migrash/main/migrash.sh -o migrash
+# Install with curl
+curl -sSL https://raw.githubusercontent.com/0x111/migrash/master/install.sh | sh
 
-# Make it executable
-chmod 700 migrash
-
-# Copy to local bin
-cp migrash ~/.local/bin
+# install with wget
+wget -qO- https://raw.githubusercontent.com/0x111/migrash/master/install.sh | sh
 ```
 
 ### Windows

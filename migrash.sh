@@ -223,7 +223,7 @@ status() {
 }
 
 show_help() {
-    echo "Usage: migrash.sh [options]"
+    echo "Usage: migrash [options]"
     echo "Options:"
     echo "  init          Create .migrashrc file"
     echo "  create        Create a new migration"
