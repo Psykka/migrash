@@ -31,7 +31,11 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 # Download migrash.sh to /usr/local/bin
-donwload_file
+if [ "$DOWNLOADER" = "wget" ]; then
+    wget -qO /usr/local/bin/migrash https://raw.githubusercontent.com/psykka/migrash/main/migrash.sh
+elif [ "$DOWNLOADER" = "curl" ]; then
+    curl -sSL https://raw.githubusercontent.com/psykka/migrash/main/migrash.sh -o /usr/local/bin/migrash
+fi
 
 # Make migrash executable
 chmod 555 /usr/local/bin/migrash
