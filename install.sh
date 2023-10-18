@@ -15,19 +15,23 @@ else
     exit 1
 fi
 
+run_root_installer() {
+    if [ "$DOWNLOADER" = "wget" ]; then
+        wget -qO- https://raw.githubusercontent.com/psykka/migrash/main/migrash.sh | sh
+    elif [ "$DOWNLOADER" = "curl" ]; then
+        curl -sSL https://raw.githubusercontent.com/psykka/migrash/main/migrash.sh | sh
+    fi
+}
+
 # Upgrade to root if not root
 if [ "$(id -u)" != "0" ]; then
     echo "Installing migrash"
-    sudo sh "$0" "$@"
+    sudo sh -c "$(declare -f run_root_installer); run_root_installer"
     exit 0
 fi
 
 # Download migrash.sh to /usr/local/bin
-if [ "$DOWNLOADER" = "wget" ]; then
-    wget -O /usr/local/bin/migrash -q https://raw.githubusercontent.com/psykka/migrash/main/migrash.sh
-elif [ "$DOWNLOADER" = "curl" ]; then
-    curl -o /usr/local/bin/migrash -sSL https://raw.githubusercontent.com/psykka/migrash/main/migrash.sh
-fi
+donwload_file
 
 # Make migrash executable
 chmod 555 /usr/local/bin/migrash
