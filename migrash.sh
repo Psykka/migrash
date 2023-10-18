@@ -11,7 +11,7 @@
 # If you didn't, you can obtain a copy from the WTFPL website:
 # http://www.wtfpl.net
 
-echo "Migrash v1.0.0"
+echo "Migrash v1.0.1"
 
 CURRENT_TIMESTAMP=$(date +'%Y%m%d%H%M%S')
 
