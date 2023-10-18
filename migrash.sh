@@ -52,6 +52,24 @@ insert_migration() {
     check_error "Error inserting migration"
 }
 
+# Remove migration from migrations table
+remove_migration() {
+    $SGDB $DATABASE_URL "DELETE FROM $MIGRATION_TABLE WHERE name = '$1';"
+    check_error "Error deleting migration"
+}
+
+# Get last migration from migrations table
+get_last_migration() {
+    $SGDB $DATABASE_URL "SELECT * FROM $MIGRATION_TABLE ORDER BY id DESC LIMIT 1;"
+    check_error "Error getting last migration"
+}
+
+# Check if migration exists in migrations table
+migration_exists() {
+    $SGDB $DATABASE_URL "SELECT COUNT(*) FROM $MIGRATION_TABLE WHERE name = '$1';"
+    check_error "Error checking if migration exists"
+}
+
 # Create migration files
 create() {
     if [ -z "$1" ]; then
@@ -91,8 +109,7 @@ up() {
             throw_error "Migration up file not found"
         fi
 
-        MIGRATION_EXISTS=$($SGDB $DATABASE_URL "SELECT COUNT(*) FROM $MIGRATION_TABLE WHERE name = '$MIGRATION';")
-        check_error "Error checking if migration exists"
+        MIGRATION_EXISTS=$(migration_exists $MIGRATION)
 
         if [ $MIGRATION_EXISTS -eq 0 ]; then
             echo "Running migration $MIGRATION"
@@ -111,8 +128,7 @@ up() {
 down() {
     create_migration_table
 
-    MIGRATION=$($SGDB $DATABASE_URL "SELECT * FROM $MIGRATION_TABLE ORDER BY id DESC LIMIT 1;")
-    check_error "Error getting last migration"
+    MIGRATION=$(get_last_migration)
 
     if [ -z "$MIGRATION" ]; then
         throw_error "No migrations to rollback"
@@ -131,8 +147,7 @@ down() {
     $SGDB $DATABASE_URL < $MIGRATION_DOWN_FILE
     check_error "Error running migration"
 
-    $SGDB $DATABASE_URL "DELETE FROM $MIGRATION_TABLE WHERE id = $MIGRATION_ID;"
-    check_error "Error deleting migration"
+    remove_migration $MIGRATION_NAME
 
     echo "Migration rolled back successfully"
 }
@@ -162,8 +177,7 @@ reset() {
         $SGDB $DATABASE_URL < $MIGRATION_DOWN_FILE
         check_error "Error running migration"
 
-        $SGDB $DATABASE_URL "DELETE FROM $MIGRATION_TABLE WHERE name = '$MIGRATION';"
-        check_error "Error deleting migration"
+        remove_migration $MIGRATION
     done
 
     echo "Migrations rolled back successfully"
@@ -177,8 +191,7 @@ status() {
     check_error "Error listing migrations"
 
     for MIGRATION in $MIGRATIONS; do
-        MIGRATION_EXISTS=$($SGDB $DATABASE_URL "SELECT COUNT(*) FROM $MIGRATION_TABLE WHERE name = '$MIGRATION';")
-        check_error "Error checking if migration exists"
+        MIGRATION_EXISTS=$(migration_exists $MIGRATION)
 
         if [ $MIGRATION_EXISTS -eq 0 ]; then
             echo "Pending: $MIGRATION"
