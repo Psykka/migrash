@@ -70,6 +70,27 @@ migration_exists() {
     check_error "Error checking if migration exists"
 }
 
+init() {
+    if [ -f "./.migrashrc" ]; then
+        throw_error ".migrashrc file already exists"
+    fi
+
+    cat > ./.migrashrc << EOF
+#!/bin/sh
+
+# Migrash config file
+
+MIGRATIONS_DIR="migrations"
+SGDB="sqlite3"
+DATABASE_URL="db.sqlite3"
+MIGRATION_TABLE="_migrash_migrations"
+EOF
+
+    check_error "Error creating .migrashrc file"
+
+    echo ".migrashrc file created successfully"
+}
+
 # Create migration files
 create() {
     if [ -z "$1" ]; then
@@ -204,6 +225,7 @@ status() {
 show_help() {
     echo "Usage: migrash.sh [options]"
     echo "Options:"
+    echo "  init          Create .migrashrc file"
     echo "  create        Create a new migration"
     echo "  up            Run all pending migrations"
     echo "  down          Rollback last migration"
@@ -219,6 +241,9 @@ if [ -f "./.migrashrc" ]; then
 fi
 
 case "$1" in
+    init)
+        init
+        ;;
     create)
         create $2
         ;;
