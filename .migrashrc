@@ -1,0 +1,6 @@
+# example config file
+
+MIGRATION_DIR=migrations
+# DATABASE_URL=$DATABASE # from env
+DATABASE_URL=mysql://root:password@localhost:3306/migrash
+MIGRATION_TABLE=_migrash_migrations
