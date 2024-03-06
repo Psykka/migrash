@@ -110,7 +110,7 @@ func parseConfigFile(filename string) (*Config, error) {
 			value := strings.Trim(strings.TrimSpace(parts[1]), "\"")
 
 			if strings.Contains(value, "$") {
-				value, _ = os.LookupEnv(value)
+				value, _ = os.LookupEnv(strings.Trim(value, "$"))
 			}
 
 			switch key {
