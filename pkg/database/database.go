@@ -42,6 +42,7 @@ func Connect(config *config.Config) *sqlx.DB {
 	if _, err := db.Exec("CREATE DATABASE IF NOT EXISTS " + config.Database.Name); err != nil {
 		panic(err)
 	}
+	defer db.Close()
 
 	db = getConnection(config.Database.DBMS, config.Database.Url+config.Database.Name)
 	fmt.Println("Connected to", config.Database.DBMS)
