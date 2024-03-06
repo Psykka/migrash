@@ -32,6 +32,8 @@ var databases = []string{
 	"postgres",
 }
 
+var configFileName = ".migrashrc"
+
 func parseConnectionString(connString string, database *Database) error {
 	pattern := `\.(sqlite|sqlite3|db|db3)\b`
 	re := regexp.MustCompile(pattern)
@@ -186,10 +188,12 @@ func parseConfigEnv() (*Config, error) {
 	return config, nil
 }
 
-func ParseConfig(filename string) (*Config, error) {
-	if filename != "" {
-		return parseConfigFile(filename)
+func ParseConfig() (*Config, error) {
+	_, err := os.Stat(configFileName)
+
+	if err != nil {
+		return parseConfigEnv()
 	}
 
-	return parseConfigEnv()
+	return parseConfigFile(configFileName)
 }

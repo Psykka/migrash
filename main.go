@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "database/sql"
+	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/jackc/pgx"
@@ -12,6 +13,9 @@ import (
 	"migrash/cmd"
 )
 
+var version = "1.0.0"
+
 func main() {
+	fmt.Printf("Migrash v%s\n", version)
 	cmd.Execute()
 }
