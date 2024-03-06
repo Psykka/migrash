@@ -27,7 +27,7 @@ type Config struct {
 }
 
 var databases = []string{
-	"mysql",
+	"sqlite3",
 	"mysql",
 	"postgres",
 }
@@ -40,7 +40,7 @@ func parseConnectionString(connString string, database *Database) error {
 	isSqlite := re.MatchString(connString)
 
 	if isSqlite {
-		database.DBMS = "sqlite"
+		database.DBMS = "sqlite3"
 		return nil
 	}
 
@@ -58,7 +58,7 @@ func parseConnectionString(connString string, database *Database) error {
 	}
 
 	if database.DBMS == "" {
-		return fmt.Errorf("unsupported connection string: scheme must be one of %v", databases)
+		return fmt.Errorf("unsupported connection string: scheme must be one of %v", strings.Join(databases, ", "))
 	}
 
 	user := parsedURL.User.Username()
@@ -79,7 +79,7 @@ func parseConnectionString(connString string, database *Database) error {
 		}
 	}
 
-	database.Url = connString
+	database.Url = fmt.Sprintf("%s:%s@tcp(%s:%s)/", user, password, host, port)
 	database.Host = host
 	database.Port = port
 	database.User = user
