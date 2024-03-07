@@ -1,6 +1,6 @@
 # Migrash
 
-Migrash a language-agnostic simple SQL migration tool. It is designed to be simple and easy to use. It is written in Go and is designed to be used in a CI/CD pipelines.
+Migrash a language-agnostic simple SQL migration tool. It is designed to be simple and easy to use. Developed in Go, it seamlessly integrates into CI/CD pipelines for effortless deployment.
 
 ## List of supported databases
 
