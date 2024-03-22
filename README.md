@@ -4,9 +4,9 @@ Migrash a language-agnostic simple SQL migration tool. It is designed to be simp
 
 ## List of supported databases
 
-- [ ] PostgreSQL
-- [ ] MySQL/MariaDB
-- [ ] SQLite
+- PostgreSQL
+- MySQL/MariaDB
+- SQLite
 
 ## Usage
 
