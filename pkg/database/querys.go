@@ -66,10 +66,10 @@ func GetLastMigration(config *config.Config, db *sqlx.DB) *Migration {
 	query := fmt.Sprintf("SELECT * FROM %s ORDER BY id DESC LIMIT 1;", config.MigrationTable)
 
 	var migration Migration
-	err := db.QueryRowx(query).StructScan(&migration)
+	err := db.Get(&migration, query)
 
 	if err != nil {
-		panic(err)
+		return nil
 	}
 
 	return &migration

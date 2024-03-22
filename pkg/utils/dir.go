@@ -1,6 +1,8 @@
 package utils
 
-import "os"
+import (
+	"os"
+)
 
 func ReadDir(dir string) []os.FileInfo {
 	d, err := os.Open(dir)
