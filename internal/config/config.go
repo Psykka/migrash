@@ -35,27 +35,22 @@ var databases = []string{
 var configFileName = ".migrashrc"
 
 func parseConnectionString(connString string, database *Database) error {
-	pattern := `\.(sqlite|sqlite3|db|db3)\b`
-	re := regexp.MustCompile(pattern)
-	isSqlite := re.MatchString(connString)
-
+	isSqlite := isSQLite(connString)
 	if isSqlite {
 		database.DBMS = "sqlite3"
 		return nil
 	}
 
 	parsedURL, err := url.Parse(connString)
-
 	if err != nil {
 		return err
 	}
 
-	for _, prefix := range databases {
-		if strings.HasPrefix(parsedURL.Scheme, prefix) {
-			database.DBMS = prefix
-			break
-		}
+	if database.Name == "" {
+		return fmt.Errorf("unsupported connection string: database name is not set")
 	}
+
+	database.DBMS = getDBMS(parsedURL.Scheme)
 
 	if database.DBMS == "" {
 		return fmt.Errorf("unsupported connection string: scheme must be one of %v", strings.Join(databases, ", "))
@@ -63,23 +58,11 @@ func parseConnectionString(connString string, database *Database) error {
 
 	user := parsedURL.User.Username()
 	password, _ := parsedURL.User.Password()
-	hostPort := strings.Split(parsedURL.Host, ":")
-	host := hostPort[0]
-	port := hostPort[1]
+	host, port := parseHostAndPort(parsedURL.Host)
 	name := strings.TrimLeft(parsedURL.Path, "/")
-	queryParams := make(map[string]string)
+	queryParams := parseQueryParams(parsedURL.RawQuery)
 
-	if len(parsedURL.RawQuery) > 0 {
-		queryString := strings.Split(parsedURL.RawQuery, "&")
-		for _, param := range queryString {
-			pair := strings.Split(param, "=")
-			if len(pair) == 2 {
-				queryParams[pair[0]] = pair[1]
-			}
-		}
-	}
-
-	database.Url = fmt.Sprintf("%s:%s@tcp(%s:%s)/", user, password, host, port)
+	database.setURL(user, password, host, port)
 	database.Host = host
 	database.Port = port
 	database.User = user
@@ -88,6 +71,51 @@ func parseConnectionString(connString string, database *Database) error {
 	database.QueryParam = queryParams
 
 	return nil
+}
+
+func isSQLite(connString string) bool {
+	pattern := `\.(sqlite|sqlite3|db|db3)\b`
+	re := regexp.MustCompile(pattern)
+	return re.MatchString(connString)
+}
+
+func getDBMS(scheme string) string {
+	for _, prefix := range databases {
+		if strings.HasPrefix(scheme, prefix) {
+			return prefix
+		}
+	}
+	return ""
+}
+
+func parseHostAndPort(hostPort string) (string, string) {
+	parts := strings.Split(hostPort, ":")
+	if len(parts) == 2 {
+		return parts[0], parts[1]
+	}
+	return parts[0], ""
+}
+
+func parseQueryParams(rawQuery string) map[string]string {
+	queryParams := make(map[string]string)
+	if len(rawQuery) > 0 {
+		queryString := strings.Split(rawQuery, "&")
+		for _, param := range queryString {
+			pair := strings.Split(param, "=")
+			if len(pair) == 2 {
+				queryParams[pair[0]] = pair[1]
+			}
+		}
+	}
+	return queryParams
+}
+
+func (database *Database) setURL(user, password, host, port string) {
+	if database.DBMS == "postgres" {
+		database.Url = fmt.Sprintf("postgres://%s:%s@%s:%s/", user, password, host, port)
+	} else {
+		database.Url = fmt.Sprintf("%s:%s@tcp(%s:%s)/", user, password, host, port)
+	}
 }
 
 func parseConfigFile(filename string) (*Config, error) {
