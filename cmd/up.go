@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"migrash/internal/config"
 	"migrash/pkg/core"
 	"migrash/pkg/database"
@@ -26,7 +25,6 @@ var upCmd = &cobra.Command{
 		db := database.Connect(config)
 		core.Up(config, db)
 
-		fmt.Println("Migrations executed successfully")
 		db.Close()
 	},
 }

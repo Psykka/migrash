@@ -61,6 +61,6 @@ var createCmd = &cobra.Command{
 			defer fmt.Printf("Created %s\n", filePath)
 		}
 
-		fmt.Printf("Migration %s created\n", args[0])
+		fmt.Printf("Migration %s created!\n", args[0])
 	},
 }

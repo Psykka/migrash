@@ -9,12 +9,12 @@ import (
 )
 
 func init() {
-	rootCmd.AddCommand(resetCmd)
+	rootCmd.AddCommand(redoCmd)
 }
 
-var resetCmd = &cobra.Command{
-	Use:   "reset",
-	Short: "Rollback all migrations",
+var redoCmd = &cobra.Command{
+	Use:   "redo",
+	Short: "Rollback the last migration and then apply it again",
 	Run: func(cmd *cobra.Command, args []string) {
 		config, err := config.ParseConfig()
 
@@ -23,7 +23,7 @@ var resetCmd = &cobra.Command{
 		}
 
 		db := database.Connect(config)
-		core.Reset(config, db)
+		core.Redo(config, db)
 
 		db.Close()
 	},
