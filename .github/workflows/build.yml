@@ -19,10 +19,9 @@ jobs:
         with:
           go-version: 1.22
       - name: Build
-        run: GOOS=${{ matrix.platform }} GOARCH=${{ matrix.arch }} go build -o migrash-${{ matrix.platform }}-${{ matrix.arch }}
+        run: GOOS=${{ matrix.platform }} GOARCH=${{ matrix.arch }} go build -ldflags="-X main.version=$(git rev-parse --short HEAD)" -o migrash-${{ matrix.platform }}-${{ matrix.arch }}
       - name: Archive
         uses: actions/upload-artifact@v2
         with:
           name: migrash-${{ matrix.platform }}-${{ matrix.arch }}
           path: migrash-${{ matrix.platform }}-${{ matrix.arch }}
-
