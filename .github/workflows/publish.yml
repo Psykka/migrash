@@ -22,7 +22,7 @@ jobs:
         with:
           go-version: 1.22
       - name: Build
-        run: GOOS=${{ matrix.platform }} GOARCH=${{ matrix.arch }} go build -ldflags="-X main.version=$(git describe --tags --abbrev=0)" -o migrash-${{ matrix.platform }}-${{ matrix.arch }}
+        run: GOOS=${{ matrix.platform }} GOARCH=${{ matrix.arch }} go build -ldflags="-X main.version=$(git describe --tags --abbrev=0) -linkmode external -extldflags '-static' -s -w" -o migrash-${{ matrix.platform }}-${{ matrix.arch }}
       - name: Post
         uses: softprops/action-gh-release@v2
         with:
